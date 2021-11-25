@@ -1,0 +1,263 @@
+\documentclass[landscape, a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\usepackage[top=2mm,bottom=2mm,left=2mm,right=2mm]{geometry}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{tikz-cd}
+\usepackage{enumitem}
+\usepackage{centernot}
+\usepackage{ifthen}
+
+% \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+% \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+\let\leq\leqslant
+\let\geq\geqslant
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\V}[1]{\textbf{\textit{#1}}}
+\newcommand{\C}{\mathscr{C}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\adj}[1]{\operatorname{adj}\left(#1\right)}
+\newcommand{\nullity}{\operatorname{nullity}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\DeclareMathSymbol{\perp}{\mathrel}{symbols}{"3F}
+\newcommand{\Or}{\vee}
+\newcommand{\true}{\textbf{true}}
+\newcommand{\false}{\textbf{false}}
+\renewcommand{\P}{\mathcal{P}}
+\renewcommand{\and}{\wedge}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\zerodisplayskips}{%
+  \setlength{\abovedisplayskip}{0pt}%
+  \setlength{\belowdisplayskip}{0pt}%
+  \setlength{\abovedisplayshortskip}{0pt}%
+  \setlength{\belowdisplayshortskip}{0pt}
+}
+\newcommand{\customsection}[1]{
+    \vspace*{-10pt}
+    \section*{#1}
+    % \vspace*{-2pt}
+}
+\newcommand{\heading}[1]{
+    \noindent\textbf{#1}
+}
+
+\appto{\normalsize}{\zerodisplayskips}
+\appto{\small}{\zerodisplayskips}
+\appto{\footnotesize}{\zerodisplayskips}
+\setlength\parindent{0pt}
+\setlist[enumerate]{itemsep=2pt, topsep=2pt, parsep=3pt}
+\setlist[description]{itemsep=2pt, topsep=0pt, parsep=3pt}
+
+\begin{document}
+\small
+\begin{multicols*}{4}
+    \boxed{\text{Done by Marcus Pang in 2021}}
+    \customsection{Things to Note}
+    \heading{Matrix Properties}
+    \begin{enumerate}
+        \item $\V{AB}\neq \V{BA}$
+        \item $\V{AB}=\textbf{0}\centernot\implies \V{A}=\textbf{0}\Or \V{B}=\textbf{0}$
+        \item $(\V{AB})^n\neq \V{A}^n\V{B}^n$
+        \item $\V{A}\adj{\V{A}}=\det{\V{A}}\cdot\V{I}$
+        \item REF has zero row $\implies$ not invertible
+    \end{enumerate}
+    \heading{Cramer's rule}
+    $$
+        \V{x}=\dfrac{1}{\det\V{A}}\begin{pmatrix}
+            \det\V{A}_1 \\
+            \det\V{A}_2 \\
+            \vdots      \\
+            \det\V{A}_n
+        \end{pmatrix}
+    $$
+    where $\V{A}_i=\V{A}$ with the $i$-th column replaced by \V{b}
+    \heading{Spans, Subspaces, Linear Independence}
+    \begin{enumerate}
+        \item $\forall S\subseteq V, \dim V=n$
+              \begin{enumerate}
+                  \item $|S|=k<n\implies \Span S \neq V$
+                  \item $|S|=k>n\implies S$ is linearly dependent
+              \end{enumerate}
+        \item check subset $V$ is subspace
+              \begin{enumerate}
+                  \item must contain zero vector
+                  \item $\forall \V{u},\V{v}\in V\implies c\V{u}+d\V{v}\in V$
+              \end{enumerate}
+        \item $\textbf{0}\in S$ then $S$ is linearly dependent
+        \item $\{\textbf{0}\}$ is a subspace of $\R^3$, with basis $\varnothing$
+    \end{enumerate}
+    \heading{Ranks}
+    \begin{enumerate}
+        \item $\rank \V{A} = \rank (\V{A} \mid \V{b}) \implies (\V{A} \mid \V{b})$ is consistent
+        \item $\rank \V{AB} \leq \min\{\rank \V{A}, \rank \V{B}\}$
+        \item $\V{B}$ is invertible $\implies \rank \V{BA}=\rank \V{A}$ (converse is false)
+    \end{enumerate}
+    \heading{Orthogonal}
+    \begin{enumerate}
+        \item orthogonal set $\implies$ linearly independent set
+        \item \V{p} is the projection of \V{u} onto $V$ if $\V{u} - \V{p}$ is orthogonal to $V$
+        \item orthogonal matrix means the transpose is its inverse
+        \item rows/cols of orthogonal matrix is a basis for $\R^n$
+    \end{enumerate}
+    \heading{Diagonalization}
+    \begin{enumerate}
+        \item matrix is diagonlizable $\iff$ it has $n$ linearly independent eigenvectors $\iff \dim(E_{\lambda_i})=r_i$
+    \end{enumerate}
+    \heading{Recurrence Relation}
+    \begin{enumerate}
+        \item recurrence matrix = $\begin{pmatrix}a_n\\a_{n+1}\end{pmatrix}=\begin{pmatrix}0&1\\p & q\end{pmatrix}$
+        \item orthogonally diagonalizable $\iff$ symmetric
+    \end{enumerate}
+    \customsection{Questions}
+    \heading{Chapter 1}
+    \begin{enumerate}
+        \item relative positions of three lines if there are
+              \begin{enumerate}
+                  \item no soln: either all parallel and not all are the same or two intersect at a point not on the third line
+                  \item one soln: all different and intersect at a point or two same lines intersecting with third line at a point
+                  \item infinite solns: all lines are the same
+              \end{enumerate}
+        \item relative positions of three planes if there are
+              \begin{enumerate}
+                  \item no soln: either all parallel and not all are the same or two intersect at a line parallel and not on the third plane
+                  \item one soln: three planes intersect at a single point
+                  \item infinite solns: two same planes intersect at a line on third plane or all three planes are the same
+              \end{enumerate}
+        \item inconsistent linear system can have more unknowns than equations
+        \item a linear system with unique solution: no. of equations $\geq$ no. of unknowns
+        \item linear system with infinite solutions can have more equations than unknowns
+        \item matrix with last column as pivot column can be considered as RREF
+        \item non-homogeneous system cannot have trivial solution
+    \end{enumerate}
+    \heading{Chapter 2}
+    \begin{enumerate}
+        \item $\V{Ax}=\textbf{0}$ has non-trivial soln $\implies \V{Ax}=\V{b}$ has either no soln or infinitely many soln
+        \item \V{A} and \V{B} are invertible $\centernot\implies$ \V{A} + \V{B} is invertible
+        \item \V{A} and \V{B} are singular $\centernot\implies$ \V{A} + \V{B} is singular
+        \item if \V{A}, \V{B} are singular square matrices, \V{AB}, \V{BA} are singular
+        \item for $\V{A}_{m\times n}, \V{B}_{n\times m}$, $m>n\implies \V{AB}$ is singular
+    \end{enumerate}
+    \heading{Chapter 3}
+    \begin{description}
+        \item[Q20] $\Span (S_1 \cap S_2)\neq \Span S_1 \cap \Span S_2$
+        \item[Q20/23] $\Span (S_1 \cup S_2) = \Span S_1 + \Span S_2 \neq \Span S_1 \cup \Span S_2$
+        \item[Q24] let $V, W$ be subspaces of $\R^n$
+            \begin{enumerate}
+                \item $V\cap W$ is a subspace of $\R^n$
+                \item $V\cup W$ is a subspace of $\R^n\iff V\subseteq W\Or W\subseteq V$
+            \end{enumerate}
+        \item[Q26] for a nonzero matrix in REF, the nonzero rows are always linearly independent
+        \item[Q30] $\V{Pu}_1, \V{Pu}_2, \hdots, \V{Pu}_k$ linearly independent \\
+            $\implies \V{u}_1, \V{u}_2, \hdots, \V{u}_k$ linearly independent.
+        \item[Q30] $\V{u}_1, \V{u}_2, \hdots, \V{u}_k$ linearly independent
+            \begin{description}
+                \item $P$ invertible $\implies \V{Pu}_1, \V{Pu}_2, \hdots, \V{Pu}_k$ linearly independent
+                \item $P$ is singular $\centernot\implies \V{Pu}_1, \V{Pu}_2, \hdots, \V{Pu}_k$ linearly independent/dependent
+            \end{description}
+        \item[Q41] $S$ is a finite subset of $V$ such that
+            \begin{description}
+                \item $\Span S=V \implies \exists S'\subseteq S$ such that $S'$ is a basis for $V$
+                \item $S$ is linearly independent $\implies \exists S'$ a basis for $V$ such that $S'\supseteq S$
+            \end{description}
+        \item[Q42] $\dim V=n\implies \exists n+1$ vectors such that $\forall \V{v}\in V$, \V{v} can be expressed as a linear combination of $n+1$ vectors
+        \item[Q43] $\dim(V+W)=\dim(V) + \dim(W)- \dim(V\cap W)$
+    \end{description}
+    \heading{Chapter 4}
+    \begin{description}
+        \item[Q17] In $\R^3$,
+            \begin{enumerate}
+                \item $\rank = 0\implies$ soln set is $\R^3$
+                \item $\rank = 1\implies$ soln set is plane in $\R^3$ passing through origin
+                \item $\rank = 2\implies$ soln set is line in $\R^3$ passing through origin
+                \item $\rank = 3\implies$ soln set is \{\textbf{0}\}
+            \end{enumerate}
+        \item[Q20] $\V{AB} = 0\implies \operatorname{col}(B)\subseteq \operatorname{null}(A)$
+        \item[Q21] row space and nullspace of a matrix cannot contain the same non-zero vector
+        \item[Q23] $\rank (\V{A} + \V{B}) \leq \rank\V{A} + \rank\V{B}$
+        \item[Q25] $\rank \V{A}=\rank \V{A}^T\V{A}=\rank \V{AA}^T$
+        \item $\nullity \V{A}=\nullity \V{A}^T\V{A}\neq \nullity \V{AA}^T$
+    \end{description}
+    \heading{Chapter 5}
+    \begin{description}
+        \item[Cauchy-Schwarz] $\norm{\V{u}\cdot \V{v}}\leq \norm{\V{u}}\norm{\V{v}}$
+        \item[Triangle] $\norm{\V{u} + \V{v}}\leq \norm{\V{u}} + \norm{\V{v}}$
+        \item $d(\V{u}, \V{w})\leq d(\V{u}, \V{v}) + d(\V{v}, \V{w})$
+        \item[Q31] $S, T$ orthonormal bases for $V$\\
+            $\implies \forall \V{u}, \V{v}\in V, (\V{u})_S \cdot (\V{v})_S = (\V{u})_T\cdot (\V{v})_T$
+        \item[Q32] $\V{A}$ is orthogonal $\implies$
+            \begin{description}
+                \item[-] $\norm{\V{u}} = \norm{\V{Au}}$
+                \item[-] $d(\V{u}, \V{v}) = d(\V{Au}, \V{Av})$
+                \item[-] angle between $\V{u},\V{v}=$ angle between $\V{Au}, \V{Av}$
+                \item[Q33] $S=\{\V{u}_1, \V{u}_2, \hdots, \V{u}_n\}$ is a basis for $\R^n\implies T=\{\V{Au}_1, \V{Au}_2, \hdots, \V{Au}_n\}$ is a basis for $\R^n$
+                \item[Q33] $S$ orthogonal/orthonormal $\implies T$ orthogonal/orthonormal
+            \end{description}
+    \end{description}
+    \heading{Chapter 6}
+    \begin{description}
+        \item[Q3] \V{A} is a square matrix, $\V{Ax}=\lambda\V{x}\implies \V{A}^T\V{u}=\lambda\V{u}$
+        \item[Q23] $\V{A}$ diagonalizable $\implies \V{A}^T$ diagonalizable
+        \item[Q23] $\V{A}, \V{B}$ diagonalizable
+            \begin{description}
+                \item $\centernot\implies \V{A}+\V{B}$ diagonalizable
+                \item $\centernot\implies \V{AB}$ diagonalizable
+            \end{description}
+        \item[Q26] for symmetric matrices, eigenvectors of different eigenspaces are orthogonal
+        \item[Q30] $\V{A}, \V{B}$ orthogonally diagonalizable
+            \begin{description}
+                \item $\implies \V{A}+\V{B}$ orthogonally diagonalizable
+                \item $\centernot\implies \V{AB}$ orthogonally diagonalizable
+            \end{description}
+    \end{description}
+    \heading{Assignments}
+    \begin{description}
+        \item[A1 Q7] for $\V{A}_{m\times n},\ \V{B}_{n\times m}$
+            \begin{enumerate}[wide]
+                \item $\V{A}$ singular $\implies \V{BA}$ singular
+                \item $m>n\implies \V{AB}$ singular
+                \item $\V{A}$ invertible $\centernot\implies \V{AB}, \V{BA}$ invertible
+            \end{enumerate}
+        \item[A3 Q3] for $\V{A}_{m\times n}, \V{B}_{n\times k}$
+            \begin{enumerate}[wide]
+                \item $m>n \and \rank\V{A}=n\implies \rank\V{AB}=\rank\V{B}$
+                \item $k>n\and \rank\V{B}=n\implies \rank\V{AB}=\rank\V{A}$
+            \end{enumerate}
+        \item[A3 Q7] for some subspace $V$ of $\R^n$,
+            \begin{enumerate}[wide]
+                \item $V\cap V^\perp = \{\textbf{0}\}$
+                \item $\V{A}_{n\times k}$ where $\text{col}(\V{A})=V \\ \implies  \text{null}(\V{AA}^T)=V^\perp$
+            \end{enumerate}
+        \item[A4 Q2] eigenvalues of orthogonal matrix are $\pm 1$
+        \item[A4 Q2] $\V{A}$ diagonalizable orthogonal matrix (not orthogonally diagonalizable) then $\V{A}^2=\V{I}$
+    \end{description}
+    \customsection{Exams}
+    \begin{description}
+        \item[14/15 S1 Q6] $\forall \V{u},\V{v}\neq \textbf{0}$, $\Span\{\V{u}\}\cap \Span\{\V{v}\}=\Span\{\V{u},\V{v}\}\implies \Span\{\V{u}\}=\Span\{\V{v}\}$
+        \item[14/15 S2 Q3] for $\V{A}_{m\times n}, \V{c}_{m\times 1}$, $n>m\implies \V{Ax}=\V{c}$ always has infinitely many least squares solutions
+        \item[14/15 S2 Q4] for $\V{M}_{n\times n}, \V{N}_{n\times n}$ with the same $n$ linearly independent eigenvectors, $\V{MN}=\V{NM}$
+        \item[15/16 S2 Q5] $T:\R^n \rightarrow \R^m$ such that standard matrix is diagonalizable $\implies \text{R}(T)=\text{R}(T\circ T)\and \ker(T)=\ker(T\circ T)$
+        \item[16/17 S2 Q4] $T:\R^n\rightarrow \R^n$ such that $\ker(T)=\ker(T\circ T)\implies \ker(T\circ T) = \ker(T\circ T\circ T)$
+        \item[16/17 S2 Q6] $\V{A}_{n\times n}, \V{B}_{n\times n}
+                \\ \implies \nullity\V{A}+\nullity\V{B}\geq \nullity\V{AB}$
+        \item[19/20 S1 Q6] $\V{A}_{n\times n}$ such that $\V{A}^2=\V{I}\implies \rank(\V{I} + \V{A})+\rank(\V{I}-\V{A})=n$
+        \item[19/20 S1 Q6] $\V{A}^2-\V{B}^2=\V{AB}\implies \V{A}, \V{B}$ cannot be orthogonal
+        \item[20/21 S1 Q2] $\forall \V{v}\in\R^n$, $\V{v}$ can be written \textbf{uniquely} as $\V{v}=\V{v}_1 + \V{v}_2$ where $\V{v}_1\in V, \V{v}_2\in V^\perp$
+        \item[20/21 S1 Q4] $E_0$ corresponds to nullspace of matrix
+            \item[20/21 S1 Q5]$T:\R^n\rightarrow\R^n$
+            \begin{enumerate}
+                \item[$\implies$] $R(T^{k+1})\subseteq R(T^k)$
+                \item[$\implies$] $m>n\and T^m$ is zero transformation $\implies T^n$ is zero transformation
+            \end{enumerate}
+    \end{description}
+\end{multicols*}
+\end{document}

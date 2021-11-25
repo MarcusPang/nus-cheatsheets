@@ -1,0 +1,509 @@
+\documentclass[landscape, a4paper]{article}
+\usepackage[top=4mm,bottom=4mm,left=4mm,right=4mm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{pdfpages}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{sectsty}
+\usepackage{empheq}
+\usepackage{fancyvrb}
+
+\newcommand{\zerodisplayskips}{%
+  \setlength{\abovedisplayskip}{0pt}%
+  \setlength{\belowdisplayskip}{0pt}%
+  \setlength{\abovedisplayshortskip}{0pt}%
+  \setlength{\belowdisplayshortskip}{0pt}
+}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathscr{C}}
+\newcommand{\Or}{\vee}
+\renewcommand{\And}{\wedge}
+\newcommand{\customsection}[1]{
+    \vspace{-5pt}
+    \section*{#1}
+    \vspace{-4pt}
+}
+\newcommand{\boxedeq}[1]{
+    \begin{empheq}[box={\fboxsep=6pt\fbox}]{align*}
+        #1
+    \end{empheq}
+}
+
+\appto{\normalsize}{\zerodisplayskips}
+\appto{\small}{\zerodisplayskips}
+\appto{\footnotesize}{\zerodisplayskips}
+\setlength\parindent{0pt}
+\sectionfont{\fontsize{12}{15}\selectfont}
+\setlist[enumerate]{itemsep=0pt, topsep=3pt, parsep=0pt}
+
+
+\begin{document}
+\small
+\begin{multicols*}{4}
+  \boxed{\text{Done by Marcus Pang in 2021}}
+  \customsection{Definitions}
+  \begin{enumerate}
+    \item computational process: set of activities in a computer,
+          designed to achieve a desired result.
+    \item primitive expressions: numerals, booleans, pre-declared functions
+    \item program: expressions with semicolons
+    \item pair: tuple of size 2 (array of size 2)
+    \item list: null or pair whose tail is a list (nested arrays)
+    \item tree of type $T$: null or pair whose head is of $T$ and whose tail is a list of type $T$
+    \item binary tree: null or entry, left binary tree branch, and right binary tree branch
+    \item stream of type $T$: null or pair whose head is of type $T$ and whose tail is a nullary function that returns a stream of type $T$
+    \item array: stores a sequence of data elements
+  \end{enumerate}
+  \customsection{Order of Growth}
+  Consider a growth function $f$ representing some program, then
+  \begin{enumerate}
+    \item $f(n)$ is big-theta of $g(n)$
+          \begin{align*}
+             & \iff f(n)\in \Theta(g(n))                                           \\
+             & \iff f(n)\in \mathcal{O}(g(n)) \And f(n)\in \Omega(g(n))            \\
+             & \iff \lim_{n\to\infty}\dfrac{f(n)}{g(n)}=c \text{ where }0<c<\infty
+          \end{align*}
+    \item $f(n)$ is big-O of $g(n)$\\
+          $\iff$ for sufficiently large $n,$
+          \[\exists c\in\R_{\geq 0}(f(n)\leq c\cdot g(n))\]
+    \item $f(n)$ is big-$\Omega$ of $g(n)$\\
+          $\iff$ for sufficiently large $n,$
+          \[\exists c\in\R_{\geq 0}(f(n)\geq c\cdot g(n))\]
+  \end{enumerate}
+
+  \customsection{Substitution Model}
+  Applicative-order reduction ("eager evaluation"):
+  \begin{enumerate}
+    \item primitive expressions: take the value
+    \item operator combinations: evaluate operands, apply operator
+    \item constant declaration: evaluate the value expression and replace the name by value
+    \item function application: evaluate component expressions
+          \begin{enumerate}
+            \item primitive function $\implies$ apply the primitive function
+            \item compound function $\implies$ substitute argument values for parameters in body of declaration
+          \end{enumerate}
+  \end{enumerate}
+  Normal order reduction ("lazy evaluation"): arguments are not evaluated, they are passed to functions as expressions, and the expressions are only evaluated when needed\\
+  Model breaks down when assignment statements are present as the model considers a constant/variable as just a name for the value and does not expect it to change.
+  \customsection{Environment Model}
+  Definitions:
+  \begin{enumerate}
+    \item environment: sequence of frames
+    \item frame: contains bindings of values to names, points to enclosing environment (next one in sequence unless it is the global frame)
+    \item extending environment: adding a new frame in existing frame
+    \item global environment: single frame with bindings of primitive and pre-declared functions and constants
+    \item program environment: directly extends global environment which contains all user programs
+  \end{enumerate}
+  Evaluating a name:
+  \begin{enumerate}
+    \item check value in current frame
+    \item if not found, look in enclosing environment
+    \item if not found, then name is unbound
+  \end{enumerate}
+  Evaluating a block:
+  \begin{enumerate}
+    \item if no constant and variable declaration, no frame is created
+    \item else extend environment (create frame)
+    \item store names of constants/variables with no values initially
+    \item evaluate declarations and bind values to name
+  \end{enumerate}
+  Evaluating constant/variable declaration:
+  \begin{enumerate}
+    \item change binding of name to value in current frame
+  \end{enumerate}
+  Evaluating assignment statements:
+  \begin{enumerate}
+    \item search for name similar to evaluating names
+    \item if name is constant/unbound return error
+  \end{enumerate}
+  Evaluating function applications:
+  \begin{enumerate}
+    \item evaluate arguments first in current environment
+    \item extends environment in which function was created (create frame)
+    \item store parameters in this new frame
+    \item evaluate function body block
+  \end{enumerate}
+  Evaluating lambda expressions/function declarations
+  \begin{enumerate}
+    \item create function object: 1 circle points to body, 1 circle points to environment where it was created
+  \end{enumerate}
+  Use ":=" for constants and ":" for variables
+  \customsection{Recursive Processes and CPS}
+  All recursive processes can be converted to iterative processes
+  \begin{enumerate}
+    \item if recursive operations are always the same, apply the operation before the calling the recurisve function
+    \item if order of operations do not matter, use helper function
+    \item if order of operations matter, adjust to reverse order
+    \item if that's too difficult, use CPS
+  \end{enumerate}
+  Continuation Passing Style: passing deferred operation as a function in extra argument to convert any recursive function
+
+  \customsection{Interpreters and Compilers}
+  Interpreter is a program that executes another program
+  \boxedeq{\text{target}\\\text{source}}
+  Compiler is a program that translates one language to another
+  \boxedeq{\text{target}_1&\implies\text{target}_2\\&\text{source}}
+  \customsection{Sorting}
+  \scriptsize\begin{verbatim}
+function bubblesort(xs) {
+  const len = length(xs);
+  for (let i = len - 1; i >= 1; i = i - 1) {
+    let p = xs;
+    for (let j = 0; j < i; j = j + 1) {
+      if (head(p) > head(tail(p))) {
+        const temp = head(p);
+        set_head(p, head(tail(p)));
+        set_head(tail(p), temp);
+      }
+      p = tail(p);
+    }
+  }
+}
+function selection_sort(xs) {
+  if (is_null(xs)) {
+    return xs;
+  } else {
+    const x = smallest(xs);
+    return pair(
+        x, 
+        selection_sort(remove(x, xs))
+    );
+  }
+}
+function smallest(xs) {
+    return is_null(tail(xs))
+        ? head(xs)
+        : head(xs) > smallest(tail(xs))
+            ? smallest(tail(xs))
+            : head(xs);
+}
+function merge_sort(xs) {
+  if (is_null(xs) || is_null(tail(xs))) {
+    return xs;
+  } else {
+    const mid = math_floor(length(xs) / 2   );
+    return merge(
+        merge_sort(take(xs, mid)), 
+        merge_sort(drop(xs, mid))
+    );
+  }
+}
+function merge(xs, ys) {
+  if (is_null(xs)) {
+    return ys;
+  } else if (is_null(ys)) {
+    return xs;
+  } else {
+    const x = head(xs);
+    const y = head(ys);
+    return x < y 
+        ? pair(x, merge(tail(xs), ys)) 
+        : pair(y, merge(xs, tail(ys)));
+  }
+}
+function take(xs, n) {
+  return n === 0 
+      ? null 
+      : pair(head(xs), take(tail(xs), n - 1));
+}
+function drop(xs, n) {
+  return n === 0 
+      ? xs 
+      : drop(tail(xs), n - 1);
+}
+function quicksort(xs) {
+  return is_null(xs)
+    ? null
+    : is_null(tail(xs))
+    ? xs
+    : accumulate(
+        append,
+        null,
+        list(
+          quicksort(head(
+            partition(tail(xs), head(xs)))
+          ),
+          list(head(xs)),
+          quicksort(tail(
+            partition(tail(xs), head(xs)))
+          )
+        )
+      );
+}
+function partition(xs, p) {
+  return pair(
+    filter((a) => a <= p, xs),
+    filter((a) => a > p, xs)
+  );
+}
+function bubblesort_array(A) {
+  const len = array_length(A);
+  for (let i = len - 1; i >= 1; i = i - 1) {
+    for (let j = 0; j < i; j = j + 1) {
+      if (A[j] > A[j + 1]) {
+        const temp = A[j];
+        A[j] = A[j + 1];
+        A[j + 1] = temp;
+      }
+    }
+  }
+}
+function selection_sort_array(A) {
+  const len = array_length(A);
+  for (let i = 0; i < len - 1; i = i + 1) {
+    let min_pos = find_min_pos(A, i, len - 1);
+    swap(A, i, min_pos);
+  }
+}
+function find_min_pos(A, low, high) {
+  let min_pos = low;
+  for (let j = low + 1; j <= high; j = j + 1) {
+    if (A[j] < A[min_pos]) {
+      min_pos = j;
+    }
+  }
+  return min_pos;
+}
+function insertion_sort(A) {
+  const len = array_length(A);
+  for (let i = 1; i < len; i = i + 1) {
+    let j = i - 1;
+    while (j >= 0 && A[j] > A[j + 1]) {
+      swap(A, j, j + 1);
+      j = j - 1;
+    }
+  }
+}
+function merge_sort_array(A) {
+  merge_sort_helper(A, 0, array_length(A) - 1);
+}
+function merge_sort_helper(A, low, high) {
+  if (low < high) {
+    const mid = math_floor((low + high) / 2);
+    merge_sort_helper(A, low, mid);
+    merge_sort_helper(A, mid + 1, high);
+    merge(A, low, mid, high);
+  }
+}
+function merge(A, low, mid, high) {
+  const B = []; // temporary array
+  let left = low;
+  let right = mid + 1;
+  let Bidx = 0;
+  while (left <= mid && right <= high) {
+    if (A[left] <= A[right]) {
+      B[Bidx] = A[left];
+      left = left + 1;
+    } else {
+      B[Bidx] = A[right];
+      right = right + 1;
+    }
+    Bidx = Bidx + 1;
+  }
+  while (left <= mid) {
+    B[Bidx] = A[left];
+    Bidx = Bidx + 1;
+    left = left + 1;
+  }
+  while (right <= high) {
+    B[Bidx] = A[right];
+    Bidx = Bidx + 1;
+    right = right + 1;
+  }
+  for (let k = 0; k < high - low + 1; k = k + 1) {
+    A[low + k] = B[k];
+  }
+}
+\end{verbatim}
+  \customsection{Searching}
+  \scriptsize\begin{verbatim}
+function binary_search_array(A, v) {
+  let low = 0;
+  let high = array_length(A) - 1;
+  while (low <= high) {
+    const mid = math_floor((low + high) / 2);
+    if (v === A[mid]) {
+      break;
+    } else if (v < A[mid]) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+  return low <= high;
+}
+\end{verbatim}
+  \customsection{Memoization}
+  \scriptsize\begin{verbatim}
+function memoize(f) {
+  const mem = [];
+  function mf(x) {
+    if (mem[x] !== undefined) {
+      return mem[x];
+    } else {
+      const result = f(x);
+      mem[x] = result;
+      return result;
+    }
+  }
+  return mf;
+}
+function mchoose(n, k) {
+  if (read(n, k) !== undefined) {
+    return read(n, k);
+  } else {
+    const result =
+      k > n
+        ? 0
+        : k === 0 || k === n
+        ? 1
+        : mchoose(n - 1, k) + mchoose(n - 1, k - 1);
+    write(n, k, result);
+    return result;
+  }
+}
+\end{verbatim}
+  \customsection{Miscellaneous}
+  \scriptsize\begin{verbatim}
+function get_sublist(start, end, L) {
+  function helper(pos, ys, result) {
+    if (pos < start) {
+      return helper(pos + 1, tail(ys), result);
+    } else if (pos <= end) {
+      return helper(pos + 1, tail(ys), 
+                pair(head(ys), result));
+    } else {
+      return reverse(result);
+    }
+  }
+  return helper(0, L, null);
+}
+function insertions(x, ys) {
+  return map(
+    (k) => append(take(ys, k), pair(x, drop(ys, k))),
+    enum_list(0, length(ys))
+  );
+}
+function permutations(ys) {
+  return is_null(ys)
+    ? list(null)
+    : accumulate(
+        append,
+        null,
+        map((x) => map((p) => pair(x, p), 
+            permutations(remove(x, ys))), ys)
+      );
+}
+function are_permutation(xs1, xs2) {
+  return is_null(xs1) && is_null(xs2)
+    ? true
+    : !is_null(xs1) && !is_null(xs2)
+    ? !is_null(member(head(xs1), xs2)) &&
+      are_permutation(
+        tail(xs1), 
+        remove(head(xs1), xs2)
+      )
+    : false;
+}
+function combinations(xs, k) {
+  if (k === 0) {
+    return list(null);
+  } else if (is_null(xs)) {
+    return null;
+  } else {
+    const s1 = combinations(tail(xs), k - 1);
+    const s2 = combinations(tail(xs), k);
+    const x = head(xs);
+    const has_x = map((s) => pair(x, s), s1);
+    return append(has_x, s2);
+  }
+}
+function remove_duplicates(lst) {
+  return accumulate(
+    (x, xs) => (is_null(member(x, xs)) 
+            ? pair(x, xs) 
+            : xs
+    ),
+    null,
+    lst
+  );
+}
+function subsets(xs) {
+  return accumulate(
+    (x, ss) =>
+      append(
+        ss,
+        map((s) => pair(x, s), ss)
+      ),
+    list(null),
+    xs
+  );
+}
+function is_subset(S, T) {
+  if (is_null(S)) {
+    return true;
+  } else if (is_null(T)) {
+    return false;
+  } else if (head(S) < head(T)) {
+    return false;
+  } else if (head(S) === head(T)) {
+    return is_subset(tail(S), tail(T));
+  } else {
+    return is_subset(S, tail(T));
+  }
+}
+function sort_ascending(A) {
+  const len = array_length(A);
+  for (let i = 1; i < len; i = i + 1) {
+    const x = A[i];
+    let j = i - 1;
+    while (j >= 0 && A[j] > x) {
+      A[j + 1] = A[j];
+      j = j - 1;
+    }
+    A[j + 1] = x;
+  }
+}
+function list_to_array(L) {
+  const A = [];
+  let i = 0;
+  for (let p = L; !is_null(p); p = tail(p)) {
+    A[i] = head(p);
+    i = i + 1;
+  }
+  return A;
+}
+function array_to_list(A) {
+  const len = array_length(A);
+  let L = null;
+  for (let i = len - 1; i >= 0; i = i - 1) {
+    L = pair(A[i], L);
+  }
+  return L;
+}
+function count_pairs(x) {
+  let pairs = null;
+  function check(y) {
+    if (!is_pair(y)) {
+      return undefined;
+    } else if (!is_null(member(y, pairs))) {
+      return undefined;
+    } else {
+      pairs = pair(y, pairs);
+      check(head(y));
+      check(tail(y));
+    }
+  }
+  check(x);
+  return length(pairs);
+}
+\end{verbatim}
+\end{multicols*}
+\end{document}

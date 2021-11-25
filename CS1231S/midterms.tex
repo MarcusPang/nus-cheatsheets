@@ -1,0 +1,546 @@
+\documentclass[landscape, a4paper]{article}
+% \usepackage[utf8]{inputenc}
+% \usepackage[T1]{fontenc}
+\usepackage{multicol}
+% \usepackage{wrapfig}
+\usepackage[top=2mm,bottom=2mm,left=2mm,right=2mm]{geometry}
+\usepackage[framemethod=tikz]{mdframed}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{mathrsfs}
+\usepackage{tikz-cd}
+\usepackage{enumitem}
+\usepackage{centernot}
+
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathscr{C}}
+\newcommand{\Or}{\vee}
+\newcommand{\true}{\textbf{true}}
+\newcommand{\false}{\textbf{false}}
+\renewcommand{\P}{\mathcal{P}}
+\renewcommand{\and}{\wedge}
+\newcommand{\zerodisplayskips}{%
+  \setlength{\abovedisplayskip}{0pt}%
+  \setlength{\belowdisplayskip}{0pt}%
+  \setlength{\abovedisplayshortskip}{0pt}%
+  \setlength{\belowdisplayshortskip}{0pt}
+}
+\newcommand{\customsection}[1]{%
+    \vspace*{-16pt}%
+    \section*{#1}%
+    \vspace*{-5pt}%
+}
+
+\appto{\normalsize}{\zerodisplayskips}
+\appto{\small}{\zerodisplayskips}
+\appto{\footnotesize}{\zerodisplayskips}
+\setlength\parindent{0pt}
+\setlist[enumerate]{itemsep=2pt, topsep=0pt, parsep=3pt}
+
+\begin{document}
+\small
+\begin{multicols*}{4}
+    \boxed{\text{Done by Marcus Pang in 2021}}
+    \customsection{Statements}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item Universal (all, every, any): $\forall x\in D (Q(x))$ is \true\ if and only if $Q(x)$ is \true\ for every $x\in D$
+        \item Conditional (if...then): $\forall x\in D\ (P(x) \implies Q(x))$ is \true\ if and only if $({\sim} P(x) \Or Q(x))$ is \true\ for every $x\in D$
+        \item Existential (there exists, there is, some): $\exists x\in D$ such that $Q(x)$ is \true\ for at least one $x\in D$
+    \end{enumerate}
+
+    \customsection{Definitions}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item Divisibility: if $n,d\in \Z \and n\neq 0$,
+              \begin{align*}
+                  d\ |\ n \iff \exists k\in\Z(n=dk)
+              \end{align*}
+        \item Congruence: if $a,b\in\Z \and n\in\Z^+$,
+              \begin{align*}
+                  a\equiv b\pmod{n} \iff n\mid (a-b)
+              \end{align*}
+        \item Rational:
+              \begin{align*}
+                  n\in\Q \iff \exists a,b\in\Z \left(n=\dfrac{a}{b} \and b \neq 0\right)
+              \end{align*}
+        \item Even:
+              \begin{align*}
+                  n \text{ is even } \iff \exists k \text{ such that }n=2k
+              \end{align*}
+        \item Odd:
+              \begin{align*}
+                  n \text{ is odd } \iff \exists k \text{ such that }n=2k+1
+              \end{align*}
+        \item Prime:
+              \begin{multline*}
+                  \forall r,s\in\Z^+ (n=rs\implies \\ (r=1\and s=n) \Or (r=n \and s=1))
+              \end{multline*}
+        \item Composite:
+              \begin{multline*}
+                  \exists r,s\in\Z^+ ((n=rs) \and (1<r<n)\\ \and (1<s<n))
+              \end{multline*}
+        \item Fraction in lowest term: largest integer that divides numerator and denominator is 1
+        \item Negation of $p$ is ${\sim} p$
+        \item Conjuction of $p$ and $q$ is $p \and q$
+        \item Disjunction of $p$ and $q$ is $p \Or q$
+        \item Statement/Propositional form: expression made of statement variables and logical connectives that becomes a statement when actual statements are substituted for the component statement variables
+        \item Logical equivalence: statements with identical truth values for each possible substitution of statements for their statement variables
+        \item Tautology/Contradiction: statement form that is always \true/\false\ regardless of the truth values of the individual statements substituted for its statement variables
+        \item Conditional (sufficient condition, only if) of $q$ by $p$ is "if $p$ then $q$" or "$p$ implies $q$" denoted as
+              \begin{align*}
+                  p \implies q
+              \end{align*}$p$ is the hypothesis/antecedent and $q$ is the conclusion/consequent.
+        \item Contrapositive (sufficient condition, only if):
+              \[{\sim} q \implies {\sim} p \equiv p \implies q\]
+        \item Converse (necessary condition, if):
+              \[q \implies p\]
+        \item Inverse (necessary condition, if):
+              \[{\sim} p \implies {\sim} q \equiv q \implies p\]
+        \item Biconditional (if and only if):
+              \[p \iff q\equiv (p\implies q) \and (q\implies p)\]
+        \item Argument: sequence of statements, where all statements (except the last one) are called premises/assumptions/hypothesis. The final statement is called the conclusion.
+              \begin{enumerate}
+                  \item Syllogism: argument with 2 premises and 1 conclusion
+                  \item Critical Row: row in truth table where all premises are \true
+                  \item If there is a critical row in which the conclusion is \false, then the argument form is invalid
+                  \item If for all critical rows the conclusion is \true, then the argument form is valid.
+                  \item Sound if and only if it is valid and all its premises are true
+              \end{enumerate}
+        \item Predicate: sentence that contains a finite number of variables and becomes a statement when specific values are substituted for the variables, $P(x_1, x_2, \ldots)$
+        \item Domain of a predicate variable: set of all values that may be substituted in place of the variable
+        \item Truth set of $P(x)$: set of all elements of $D$ that make $P(x)$ \true\ when substituted for $x$, $\{x \in D\ |\ P(x)\}$
+        \item Set: unordered collection of objects
+              \begin{enumerate}
+                  \item Sets of size 1 are called singletons
+                  \item A set is finite if it has finitely many distinct elements
+              \end{enumerate}
+        \item Set Equality: sets with all the same elements
+              \begin{align*}
+                  A=B \iff \forall z(z\in A\iff z \in B)
+              \end{align*}
+        \item Subset: set where all elements are contained by another set (set included by another set)
+              \begin{align*}
+                  A\subseteq B \iff \forall z(z\in A\implies z\in B)
+              \end{align*}
+        \item Power set: the set of all subsets, $\P(A)$
+        \item Cardinality: the number of (distinct) elements in a set, $|A|$
+        \item Ordered pairs: expressions of the form $(x,y)$
+        \item Ordered $n$-tuples: $(x_1, x_2, \ldots, x_n), n\geq 2$
+              \begin{multline*}
+                  (x_1,x_2,\ldots, x_n)=(y_1,y_2,\ldots, y_n) \iff \\ x_1=y_1 \and x_2=y_2 \and \ldots x_n=y_n
+              \end{multline*}
+        \item Cartesian product of sets:
+              \begin{align*}
+                  A\times B=\{x\in A \and x\in B\}
+              \end{align*}
+        \item Union of sets:
+              \begin{align*}
+                  A \cup B=\{x \mid x\in A\Or x\in B\}
+              \end{align*}
+        \item Intersection of sets:
+              \begin{align*}
+                  A \cap B=\{x\mid x\in A \and x\in B\}
+              \end{align*}
+        \item Complement of a set in another set:
+              \begin{align*}
+                  A-B=A\backslash B & =\{x\mid x \in A \and x\notin B\} \\
+                  \overline{B}      & =U\backslash B
+              \end{align*}
+        \item Disjoint sets: $A\cup B=\varnothing$
+        \item Pairwise/Mutually disjoint sets: for all distinct
+              $i,j=\{1,2,\ldots,n\}$,
+              \[
+                  A_i\cap A_j=\varnothing
+              \]
+        \item Partition of set: $\C$ is a partition of a set $A$ if it is a set of mutually disjoint nonempty subsets (components) of $A$ whose union is $A$
+              \begin{enumerate}
+                  \item $\forall S\in\C(\varnothing\neq S\subseteq A)$
+                  \item $\forall x \in A\ \exists S \in \C  (x\in S)\and$
+                        \begin{multline*}
+                            \forall x\in A\ \forall S_1,S_2\in\C \\ (x\in S_1\and x\in S_2 \implies S_1=S_2)
+                        \end{multline*}
+              \end{enumerate}
+              \[
+                  \therefore \forall x \in A\ \exists ! S\in\C (x\in S)
+              \]
+        \item Relation:
+              \begin{enumerate}
+                  \item $R\subseteq  A\times B$
+                  \item $x\ R\ y \text{ for }(x,y)\in R \and x \centernot{R} y \text{ for }(x,y)\notin R$
+              \end{enumerate}
+              \begin{align*}
+                  R      & = \{(x,y)\in A\times B \mid x\ R\ y\}      \\
+                  R^{-1} & = \{(y,x)\in B\times A \mid y\ R^{-1}\ x\}
+              \end{align*}
+        \item Binary relation on a set: relation from $A$ to $A$
+        \item Reflexive: $\forall x\in A(x\ R\ x)$
+        \item Symmetric: $\forall x,y\in A(x\ R\ y\implies y\ R\ x)$
+        \item Transitive: $\forall x,y,z\in A(x\ R\ y \and y\ R\ z \implies x\ R\ z)$
+        \item Anti-symmetric:
+              \[
+                  \forall x,y\in A \left(x\ R\ y\and y\ R\ x\implies x=y\right)
+              \]
+        \item Comparable: $x\ R\ y \Or y\ R\ x$
+        \item Equivalence relation: relation that is reflexive, symmetric, and transitive, usually ${\sim}$
+        \item Equivalence class of $x$ w.r.t ${\sim}$: set of all elements that are ${\sim}$-related to $x$
+              \[
+                  [x]_{\sim}=\{y\in A\mid x{\sim} y\}
+              \]
+        \item Set of all equivalence classes (quotient of set by relation):
+              \[
+                  A/{\sim} =\{[x]_{\sim}\mid x\in A\}
+              \]
+        \item Representative of an equivalence class: element of the equivalence class
+        \item Quotient $\Z/{\sim}_n$ is denoted as $\Z_n$ or $\Z/n\Z$, and addition/multiplication is defined as follows
+              \begin{align*}
+                  [x]+[y]=[x+y] &  & [x]\cdot[y]=[x\cdot y]
+              \end{align*}
+        \item (Non-strict) Partial Order: relation that is reflexive, anti-symmetric, and transitive, denoted with $\preccurlyeq$ and $x\prec y\equiv x\preccurlyeq y \and x\neq y$
+        \item (Non-strict) Total/Linear Order: partial order where every pair of elements is comparable
+        \item Partially Ordered Set (Poset) refers to the ordered pair $(A, R)$ where $R$ is a partial order on $A$
+        \item Hasse Diagram of $\preccurlyeq$: if $x\prec y$ and no $z\in A$ such that $x\prec z\prec y$, then $x$ is placed below $y$ and a line joins $x$ to $y$, else no line
+        \item Minimal Element: $\forall x\in A(x\preccurlyeq c\implies c = x)$
+        \item Maximal Element: $\forall x\in A(c\preccurlyeq x\implies c = x)$
+        \item Smallest Element: $\forall x\in A(c\preccurlyeq x)$
+        \item Largest Element: $\forall x\in A(x\preccurlyeq c)$
+        \item Linearization of $\preccurlyeq$ is a total order $\preccurlyeq^*$ such that
+              \[\forall x,y\in A (x\preccurlyeq y \implies x \preccurlyeq^* y)\]
+        \item Function or a map from $A$ to $B$: assignment to each element of $A$ exactly one element of $B$, $f:A\rightarrow B$
+              \begin{enumerate}
+                  \item If $x\in A$ then $f(x)$ is the image of $x$ under $f$, if $y=f(x)$ then $f$ maps $x$ to $y$, denoted as $f:x\mapsto y$
+                  \item $A$ is the domain of $f$, $B$ is the codomain of $f$
+              \end{enumerate}
+        \item Identity function: id$:A\rightarrow A$, which satisfies
+              \[
+                  \forall x\in A \left(\text{id}_A(x)=x\right)
+              \]
+    \end{enumerate}
+
+    \customsection{Order of Operations}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item ${\sim}$
+        \item $\and$ and $\Or$
+        \item $\implies$ and $\iff$
+    \end{enumerate}
+
+    \customsection{Argument Forms}
+    \noindent\textbf{Rules of Inferences}
+    \[
+        \text{premise}_1\and \ldots\and \text{premise}_n \implies \text{conclusion}
+    \]
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item Modus Ponens and Universal Modus Ponens
+              \vspace{-4pt} \par {\centering
+                  $p \implies q$ \\
+                  $p$           \\
+                  $\therefore q $ \par
+              }
+        \item Modus Tollens and Universal Modus Tollens
+              \vspace{-4pt} \par {\centering
+              $p \implies q$ \\
+              ${\sim} q$           \\
+              $\therefore\ {\sim} p $ \par
+              }
+        \item Generalization
+              \begin{align*}
+                  p                   &  & q                  \\
+                  \therefore p  \Or q &  & \therefore p \Or q
+              \end{align*}
+        \item Specialization
+              \begin{align*}
+                  p \and q     &  & p \and q     \\
+                  \therefore p &  & \therefore q
+              \end{align*}
+        \item Conjunction
+              \vspace{-4pt} \par {\centering
+                  $p$ \\
+                  $q$           \\
+                  $\therefore p \and q $ \par
+              }
+        \item Elimination
+              \begin{align*}
+                  p \Or q      &  & p \Or q      \\
+                  {\sim} q     &  & {\sim} p     \\
+                  \therefore p &  & \therefore q
+              \end{align*}
+        \item Transitivity
+              \vspace{-4pt} \par {\centering
+                  $p\implies q$ \\
+                  $q \implies r$ \\
+                  $\therefore p \implies r $ \par
+              }
+        \item Proof by division into cases
+              \vspace{-4pt} \par {\centering
+                  $p\Or q$ \\
+                  $p\implies r$ \\
+                  $q\implies r$ \\
+                  $\therefore r $ \par
+              }
+        \item Contradiction rule\\
+              \vspace{-16pt} \par {\centering
+                  ${\sim} p \implies \false$ \\
+                  $\therefore p $ \par
+              }
+    \end{enumerate}
+    \noindent\textbf{Rules of Inference for Quantified Statements}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item Universal Modus Ponens
+              \par {\centering
+                  $\forall x\in D (P(x)\implies Q(x))$\\
+                  $P(a) \text{ for a particular a}\in D$\\
+                  $\therefore Q(a)$\par
+              }
+        \item Universal Modus Tollens
+              \par {\centering
+                  $\forall x\in D (P(x)\implies Q(x))$        \\
+                  ${\sim} Q(a) \text{ for a particular a}\in D$ \\
+                  $\therefore {\sim} P(a)$ \par
+              }
+        \item Universal Transitivity
+              \par {\centering
+                  $\forall x\in D (P(x)\implies Q(x))$        \\
+                  $\forall x\in D (Q(x)\implies R(x))$        \\
+                  $\therefore \forall x (P(x)\implies R(x))$ \par
+              }
+        \item Universal Instantiation
+              \par {\centering
+                  $\forall x\in D(P(x))$        \\
+                  $\therefore P(a)$ if $a\in D$ \par
+              }
+        \item Universal Generalization
+              \par {\centering
+                  $\forall P(a)$ for every $a\in D$        \\
+                  $\therefore \forall x\in D (P(x))$ \par
+              }
+        \item Existential Instantiation
+              \par {\centering
+                  $\exists x\in D (P(x))$        \\
+                  $\therefore P(a)$ for some $a\in D$ \par
+              }
+        \item Existential Generalization
+              \par {\centering
+                  $P(a)$ for some $a\in D$        \\
+                  $\therefore \exists x\in D (P(x))$ \par
+              }
+    \end{enumerate}
+
+    \noindent\textbf{Common Fallacies}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item Ambiguous premises
+        \item Circular reasoning
+        \item Jumping to a conclusion
+        \item Converse/Inverse error
+    \end{enumerate}
+
+    \customsection{Proof Types}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item Direct Proof: using algebra/definitions to construct an argument
+        \item By Construction: form of direct proof which comes up with a specific example to prove/disprove the statement
+        \item By Contradiction: assume the negation of the statement and arrive to the conclusion that the negation is false, and since every step is logically correct, the assumption must be false
+        \item By Exhaustion: list all possible scenarios (for finite cases)
+    \end{enumerate}
+
+    \customsection{(T2.1.1) Logical Equivalences}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item Commutative Law
+              \begin{align*}
+                  p \and q\equiv q \and p &  & p \Or q\equiv q \Or p
+              \end{align*}
+        \item Associative laws
+              \begin{align*}
+                  p \and q \and r \equiv (p \and q) \and r & \equiv p \and (q \and r) \\
+                  p \Or q \Or r \equiv (p \Or q) \Or r     & \equiv p \Or (q \Or r)
+              \end{align*}
+        \item Distributive laws
+              \begin{align*}
+                  p \and (q \Or r) & \equiv (p \and q) \Or (q \and r) \\
+                  p \Or (q \and r) & \equiv (p \Or q) \and (q \Or r)
+              \end{align*}
+        \item Identity laws
+              \begin{align*}
+                  p \and \true \equiv p &  & p \Or \false  \equiv p
+              \end{align*}
+        \item Negation laws
+              \begin{align*}
+                  p\ \Or {\sim} p\equiv \true &  & p\ \and {\sim} p  \equiv \false
+              \end{align*}
+        \item Double negative law
+              \begin{align*}
+                  {\sim}({\sim} p) & \equiv p
+              \end{align*}
+        \item Idempotent laws
+              \begin{align*}
+                  p \and p \equiv p &  & p \Or p \equiv p
+              \end{align*}
+        \item Universal bound laws
+              \begin{align*}
+                  p \Or \true \equiv \true &  & p \and \false \equiv \false
+              \end{align*}
+        \item De Morgan’s laws
+              \begin{align*}
+                  {\sim}(p \and q) & \equiv {\sim} p \Or {\sim} q  \\
+                  {\sim}(p \Or q)  & \equiv {\sim} p \and {\sim} q
+              \end{align*}
+        \item Absorption laws
+              \begin{align*}
+                  p \Or (p \and q) \equiv p &  &
+                  p \and (p \Or q) \equiv p
+              \end{align*}
+        \item Negation of true and false
+              \begin{align*}
+                  {\sim} \true \equiv \false &  & {\sim} \false \equiv \true
+              \end{align*}
+
+    \end{enumerate}
+
+    \customsection{(T5.3.5) Set Identities}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item Identity Law
+              \begin{align*}
+                  A \cup \varnothing = A &  & A\cap U = A
+              \end{align*}
+        \item Universal Bound Law
+              \begin{align*}
+                  A \cup U = U &  & A \cap \varnothing = \varnothing
+              \end{align*}
+        \item Idempotent Law*
+        \item Double Complement Law
+              \begin{align*}
+                  \overline{(\overline{A})}=A
+              \end{align*}
+        \item Commutative Law*
+        \item Associative Law*
+        \item Distributive Law*
+        \item De Morgan's Law*
+        \item Absorption Law*
+        \item Complement Law
+              \begin{align*}
+                  A\cup \overline{A}=U &  & A\cap \overline{A}=\varnothing
+              \end{align*}
+        \item Set Difference Law
+              \begin{align*}
+                  A\backslash B=A\cap \overline{B}
+              \end{align*}
+        \item Top and Bottom Law
+              \begin{align*}
+                  \overline{\varnothing}=U &  & \overline{U}=\varnothing
+              \end{align*}
+    \end{enumerate}
+    * --- see logical equivalence
+
+    \customsection{Theorems ($5^{th}$ edition)}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item (T4.8.1) $\sqrt{2}$ is irrational
+        \item (P4.7.4) $\forall n\in\Z (n^2$ is even $\implies n$ is even)
+        \item (T3.2.1) ${\sim} (\forall x\in D, P(x)) \equiv \exists x\in D$ such that $P(x)$
+        \item (T3.2.2) ${\sim} (\exists x\in D$ such that $P(x)) \equiv \forall x\in D, P(x)$
+        \item (T4.3.1) Every integer is a rational number
+        \item (T4.3.2) Sum of any two rational number is rational
+        \item (C4.2.3) Double of a rational number is rational
+        \item (T4.4.1) $\forall a,b\in\Z^+ (a\ |\ b\implies a\leq b)$
+        \item (T4.4.2) The only divisors of 1 are 1 and -1
+        \item (T4.4.3) $\forall a,b,c\in\Z (a\ |\ b \and b\ |\ c\implies a\ |\ c)$
+        \item (T4.7.1) There is no greatest integer
+        \item (T5.1.1.7) Empty set is a unique set with no element
+        \item (T5.2.4) For finite sets, $|\P(A)|=2^{|A|}$
+        \item (T5.3.12) For (pairwise) disjoint sets,
+              \begin{align*}
+                  |A\cup B|                         & =|A|+|B|                  \\
+                  |A_1\cup A_2\cup \ldots \cup A_n| & =|A_1|+|A_2|+\ldots+|A_n|
+              \end{align*}
+        \item (T5.3.13) Inclusion-Exclusion Principle: for finite sets, $|A\cup B|=|A|+|B|-|A\cap B|$
+        \item (L6.4.4) Let ${\sim}$ be an equivalence relation, then
+              \[
+                  \begin{tikzcd}
+                      & x \sim y \arrow[dr, Rightarrow] &\\
+                      {[x]_{\sim}}={[y]_{\sim}} \arrow[ur, Rightarrow] & & \arrow[ll, Rightarrow] [x]\cap[y]\neq\varnothing
+                  \end{tikzcd}
+              \]
+        \item (T6.4.9) $A/{\sim}$ is a partition of $A$
+        \item (P7.1.5) Addition/Multiplication is well-defined on $\Z_n$. $\forall n\in\Z^+$,
+              \begin{multline*}
+                  [x_1]=[x_2] \and [y_1]=[y_2] \implies \\
+                  [x_1]+[y_1]=[x_1+y_1]=[x_2+y_2]=[x_2]+[y_2] \\
+                  \and [x_1]\cdot [y_1]=[x_1\cdot y_1]=[x_2\cdot y_2]=[x_2]\cdot [y_2]
+              \end{multline*}
+        \item (P7.4.4) For posets, a smallest element is minimal and there is at most one smallest element
+        \item (P7.4.6) For a nonempty finite poset, a minimal element can be found
+        \item (T7.4.10) For any partial order on a set, there exists a total order on that set
+        \item (Tutorial 4) Division Theorem:
+              \begin{multline*}
+                  \forall n\in\Z, d\in\Z^+ \exists !q,r\in\Z \text{ s.t. } \\
+                  n=dq+r \and 0\leq r < d
+              \end{multline*}
+        \item (P6.2.16) ${\sim}_\C$ the same-component relation is an equivalence relation
+        \item (P6.3.4) ${\sim}_n$ the congruence-mod-$n$ relation is an equivalence relation
+
+    \end{enumerate}
+
+    \customsection{Set Notations}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item Roster notation: $\{x_1, x_2, ..., x_n\}$
+        \item Set builder notation: $\{x\in U\ |\ P(x)\}$
+        \item Replacement notation: $\{f(x)\ |\ x\in U\}$
+    \end{enumerate}
+
+    \customsection{Useful}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item $(p \Or q) \and {\sim}(p \and q)\equiv p \oplus q$
+        \item $(A\cap B)\cup (A\backslash B)=A$
+        \item $A\cap B\subseteq A$
+        \item (Tutorial 4) The following are equivalent:
+              \begin{enumerate}
+                  \item $\forall x, y\in A (x\ R\ y\implies y\ R\ x)$
+                  \item $R=R^{-1}$
+                  \item $\forall x,y\in A(x\ R\ y\iff y\ R\ x)$
+              \end{enumerate}
+        \item (Tutorial 4) Relation on $\Q:$
+              \begin{enumerate}
+                  \item $xy\geq 0$ is reflexive and symmetric
+                  \item $xy\ge 0$ is symmetric and transitive
+              \end{enumerate}
+        \item (Quiz 3)
+              \begin{enumerate}
+                  \item Order of quantifiers can be freely arranged if all quantifiers are of the same type
+                  \item $\forall (P(x) \and Q(x)) \iff \forall x P(x)\and \forall x Q(x)$
+                  \item $\exists (P(x) \Or Q(x)) \iff \exists x P(x)\Or \exists x Q(x)$
+              \end{enumerate}
+        \item (Quiz 5)
+              \begin{enumerate}
+                  \item $\P(\varnothing)=\{\varnothing\}$ has 1 element and 2 subsets
+                  \item For all sets, $B\times A \neq A \times B$
+              \end{enumerate}
+        \item (Quiz 6)
+              \begin{enumerate}
+                  \item non-symmetric relations which are reflexive $\centernot\implies$ they are antisymmetric
+                  \item non-symmetric relation which are antisymmetric $\centernot\implies$ they are reflexive
+                  \item symmetric relations may be antisymmetric or not
+                  \item antisymmetric relations may be symmetric or not
+                  \item $\min(|R|)=n$ if $R$ is an equivalence relation on $A$ where $|A|=n$
+              \end{enumerate}
+        \item (Quiz 7.3/7.4)
+              \begin{enumerate}
+                  \item not symmetric may not be antisymmetric
+                  \item for finite posets,
+                        \begin{enumerate}[wide]
+                            \item any minimal element is not necessarily smallest
+                            \item any smallest is minimal
+                            \item the smallest element is unique
+                            \item $\exists$ smallest $implies$ exactly 1 minimal
+                            \item exactly 1 minimal $\centernot\implies$ $\exists$ smallest
+                        \end{enumerate}
+              \end{enumerate}
+    \end{enumerate}
+
+    \customsection{Assumptions}
+    \begin{enumerate}[wide, labelindent=2pt]
+        \item every integer is even or odd, but not both
+        \item every rational can be reduced to a fraction in its lowest term
+    \end{enumerate}
+
+\end{multicols*}
+\end{document}
