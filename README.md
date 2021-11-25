@@ -5,5 +5,5 @@ CS1231S finals notes not finished.
 
 ## Modules
 - [x] CS1101S
-- [] CS1231S
+- [ ] CS1231S
 - [x] MA2001
